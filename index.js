@@ -62,6 +62,21 @@ app.post('/user', (req,res)=>{
 
     res.redirect("/")
 })
+
+app.post('/catagory', (req,res)=>{
+    storage.storingTypeCatagory(req.body.catagory)
+    const type = storage.availableCatagory()
+    storage.storingTheDate(req.body.date)
+    const date = storage.availableDates()
+    storage.storingTheCatagoryCost(req.body.cost)
+    const cost = storage.storedCost()
+    console.log(type)
+    console.log(date)
+    console.log(cost)
+    res.redirect("catagory")
+})
+
+
 //Starting the server on PORT 2001
 let PORT = process.env.PORT || 2001 ;
 app.listen(PORT,(req,res)=>{

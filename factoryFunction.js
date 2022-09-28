@@ -2,6 +2,9 @@ module.exports = function StoringInformation(){
     var firstNamesContainer = {};
     var lastNamesContainer = {};
     var userEmailsContainer = {};
+    var catagories = {};
+    var dateOfCatagory = {};
+    var costOfCatagoryContainer = {} 
 
     function storingFirstNames(firstNames){
         if(firstNamesContainer[firstNames] === undefined){
@@ -44,6 +47,46 @@ module.exports = function StoringInformation(){
         return userEmailsContainer;
     }
 
+    function storingTypeCatagory(catagory){
+        if(catagories[catagory] === undefined){
+            catagories[catagory] = 1;
+        }
+        else{
+            catagories[catagory]++;
+        }
+
+    }
+
+    function availableCatagory(){
+        return catagories;
+    }
+
+    function storingTheDate(date){
+        if(dateOfCatagory[date] === undefined){
+            dateOfCatagory[date] = 1;
+        }
+        else{
+            dateOfCatagory[date]++;
+        }
+    }
+
+    function availableDates(){
+        return dateOfCatagory;
+    }
+
+    function storingTheCatagoryCost(cost){
+        if(costOfCatagoryContainer[cost] === undefined){
+            costOfCatagoryContainer[cost] = 1;
+        }
+        else{
+            costOfCatagoryContainer[cost]++;
+        }
+    }
+
+    function storedCost(){
+        return costOfCatagoryContainer;
+    }
+
 
     return{
         firstNamesContainer,
@@ -54,8 +97,15 @@ module.exports = function StoringInformation(){
         storingUserEmails,
         storedUserEmails,
         lastNamesContainer,
-        userEmailsContainer
-
-
+        userEmailsContainer,
+        storingTypeCatagory,
+        availableCatagory,
+        catagories,
+        storingTheDate,
+        availableDates,
+        dateOfCatagory,
+        costOfCatagoryContainer,
+        storingTheCatagoryCost,
+        storedCost
     }
 }
