@@ -1,0 +1,21 @@
+.container {
+    text-align: center;
+}
+
+.navBar {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.navBar > .home {
+    flex: 2;
+} 
+
+.navBar > .catagory {
+    flex: 1;
+}
+
+.navBar > .expense {
+    flex: 1;
+}
+
