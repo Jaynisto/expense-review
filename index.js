@@ -46,7 +46,16 @@ app.get('/catagory', (req,res)=>{
 })
 
 app.get('/expense', (req,res)=>{
-    res.render("expense")
+    let storedNames = storage.storedFirstNames()
+    let catagory = storage.availableCatagory()
+    let date = storage.availableDates()
+    let cost = storage.storedCost()
+    res.render("expense", {
+        storedNames,
+        catagory,
+        date,
+        cost
+    })
 })
 app.post('/user', (req,res)=>{
     storage.storingFirstNames(req.body.firstname)
@@ -56,9 +65,9 @@ app.post('/user', (req,res)=>{
     storage.storingUserEmails(req.body.email)
     const storedEmails = storage.storedUserEmails()
 
-    console.log(storedFirst)
-    console.log(storedLast)
-    console.log(storedEmails)
+    // console.log(storedFirst)
+    // console.log(storedLast)
+    // console.log(storedEmails)
 
     res.redirect("/")
 })
@@ -70,9 +79,9 @@ app.post('/catagory', (req,res)=>{
     const date = storage.availableDates()
     storage.storingTheCatagoryCost(req.body.cost)
     const cost = storage.storedCost()
-    console.log(type)
-    console.log(date)
-    console.log(cost)
+    // console.log(type)
+    // console.log(date)
+    // console.log(cost)
     res.redirect("catagory")
 })
 

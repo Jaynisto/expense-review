@@ -15,8 +15,31 @@
     </nav><br><br>
     <h1>Expenses Page</h1><br>
     <div class="container3">
-        <p>Your Expenses Are As Bellow:</p>
-
+        <p>Your Expenses Are As Bellow:</p><br>
+        <hr>
+        <table class="display">
+            <tr>
+                <th>Name</th>
+                <th>Catagory</th>
+                <th>Date</th>
+                <th>Cost</th>
+            </tr>
+            <tr>
+                {{#each storedNames}}
+                    <td>{{@key}}</td>
+                {{/each}}
+                {{#each catagory}}
+                    <td>{{@key}}</td>
+                {{/each}}
+                {{#each date}}
+                    <td>{{@key}}</td>
+                {{/each}}
+                {{#each cost}}
+                    <td>{{@key}}</td>
+                {{/each}}
+            </tr>
+            
+        </table>
     </div>
 </body>
 </html>
