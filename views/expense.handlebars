@@ -11,6 +11,7 @@
     <nav class="navBar">
         <div class="home"><a href="/" style="text-decoration: none;">Home</a></div>
         <div class="catagory"><a href="/catagory" style="text-decoration: none;">Catagory</a></div>
+        <div class="users"><a href="/users" style="text-decoration: none;">Users</a></div>
         <div class="expense"><a href="/expense" style="text-decoration: none;">Expenses</a></div>
     </nav><br><br>
     <h1>Expenses Page</h1><br>
@@ -25,18 +26,8 @@
                 <th>Cost</th>
             </tr>
             <tr>
-                {{#each storedNames}}
-                    <td>{{@key}}</td>
-                {{/each}}
-                {{#each catagory}}
-                    <td>{{@key}}</td>
-                {{/each}}
-                {{#each date}}
-                    <td>{{@key}}</td>
-                {{/each}}
-                {{#each cost}}
-                    <td>{{@key}}</td>
-                {{/each}}
+                <td></td>
+                
             </tr>
             
         </table>

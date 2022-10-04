@@ -3,13 +3,18 @@ const exphbs = require('express-handlebars');
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const session = require("express-session");
-const StoringInformation = require("./factoryFunction.js")
+const StoringInformation = require("./factoryFunction.js");
+const db = require("./database/databaseConnectionString.js");
+const databaseManipulation = require("./database/databaseFactoryFunction.js");
 
 //Express instance
 let app = express()
 
 //Factory function instance
 let storage = StoringInformation();
+
+//Db factory function
+let sendData = databaseManipulation(db)
 
 //Configuring Handlebars
 const handlebarSetup = exphbs.engine({
@@ -45,25 +50,25 @@ app.get('/catagory', (req,res)=>{
     res.render("catagory")
 })
 
-app.get('/expense', (req,res)=>{
-    let storedNames = storage.storedFirstNames()
-    let catagory = storage.availableCatagory()
-    let date = storage.availableDates()
-    let cost = storage.storedCost()
-    res.render("expense", {
+app.get('/users', async(req,res)=>{
+    let storedNames = await sendData.gettingStoredNames()
+   console.log(storedNames)
+    res.render("users", {
         storedNames,
-        catagory,
-        date,
-        cost
     })
+
 })
-app.post('/user', (req,res)=>{
-    storage.storingFirstNames(req.body.firstname)
-    const storedFirst = storage.storedFirstNames()
-    storage.storingLastNames(req.body.lastname)
-    const storedLast = storage.storedLastNames()
-    storage.storingUserEmails(req.body.email)
-    const storedEmails = storage.storedUserEmails()
+
+app.get('/expense/:names', async (req,res)=>{
+    res.render("expense")
+})
+app.post('/user', async (req,res)=>{
+    await sendData.storingFirstName(req.body.firstname, req.body.lastname, req.body.email)
+    // const storedFirst = storage.storedFirstNames()
+    // await sendData.storingFirstName(req.body.lastname)
+    // const storedLast = storage.storedLastNames()
+    // await sendData.storingFirstName(req.body.email)
+    // const storedEmails = storage.storedUserEmails()
 
     // console.log(storedFirst)
     // console.log(storedLast)
