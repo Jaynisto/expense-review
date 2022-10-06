@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catagories</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Registration Page</h1><br>
+    <div class="container3"> 
+        <h1>Register User</h1>
+        <form action="registration" method="POST">
+            <div class="successMessage">
+                {{messages.success}}
+            </div>
+            <div class="errorMessage">
+                {{messages.error}}
+            </div><br>
+            <label for="username">Username:</label>
+            <input type="text" name="username" width="10px">
+            <br>
+            <input type="submit">
+        </form>        
+    </div>
+</body>
+</html>

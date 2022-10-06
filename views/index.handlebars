@@ -4,29 +4,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Catagories</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navBar">
-        <div class="home"><a href="/" style="text-decoration: none;">Home</a></div>
-        <div class="catagory"><a href="/catagory" style="text-decoration: none;">Catagory</a></div>
-        <div class="expense"><a href="/users" style="text-decoration: none;">Users</a></div>
-        <div class="expense"><a href="/expense" style="text-decoration: none;">Expenses</a></div>
-        
-    </nav><br><br>
-    <h1>Home page</h1><br>
-    
-    <form action="user" method="POST">
-        <label for="firstname">First Name:</label><br>
-        <input type="text" name="firstname"><br><br>
-        <label for="lastname">Last Name:</label><br>
-        <input type="text" name="lastname"><br><br>
-        <label for="email">Email Adrress:</label><br>
-        <input type="text" name="email"><br><br>
-        <button type="submit">Register</button>
-    </form>
+    <h1>Catagory Page</h1><br>
+    <div class="container2">
+        <p>Please Select Catagory And Enter Your Spending As Well As The Date</p><br><br>
+       
+        <form action="addCatagory" method="POST">
+            <h2>Add category</h2><br>
+            <div class="errorMessage">
+                {{messages.error}}
+            </div>
+            <div class="successMessage">
+                {{messages.success}}
+            </div><br><br>
+            <label for="category">Catagory:</label>
+            <select id="category" name="category">
+               <option value="">Select Category</option>
+               {{#each category}}
+               <option value="{{id}}">{{category}}</option>
+               {{/each}}
+            </select><br><br>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date"><br><br>
+            <label for="cost">The Cost:</label><input type="text" id="cost" name="cost"><br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <div>
+            <h2>Selected Category</h2>
+            <table align="center">
+                <tr>
+                    <th>Selected by</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Day</th>
+                </tr>
+                {{#each expenseInfo}}
+                <tr>
+                    <td>{{username}}</td>
+                    <td>R{{cost}}</td>
+                    <td>{{category}}</td>
+                    <td>{{day}}</td>
+                </tr>
+                {{/each}}
+                
 
-    
+            </table>
+        </div>
+    </div>
 </body>
 </html>

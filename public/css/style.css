@@ -2,29 +2,11 @@
     text-align: center;
 }
 
-.navBar {
-    display: flex;
-    justify-content: space-evenly;
+.successMessage {
+    color: green;
 }
 
-.navBar > .home {
-    flex: 2;
-} 
-
-.navBar > .catagory {
-    flex: 1;
-}
-
-.navBar > .expense {
-    flex: 1;
-}
-
-.navBar > .users {
-    flex: 1;
-}
-
-
-.display {
-    margin: 0 auto;
+.errorMessage {
+    color: red;
 }
 

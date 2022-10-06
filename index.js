@@ -6,9 +6,11 @@ const session = require("express-session");
 const StoringInformation = require("./factoryFunction.js");
 const db = require("./database/databaseConnectionString.js");
 const databaseManipulation = require("./database/databaseFactoryFunction.js");
+const ShortUniqueId = require("short-unique-id");
 
 //Express instance
 let app = express()
+const uniqueId = new ShortUniqueId({ length: 10 });
 
 //Factory function instance
 let storage = StoringInformation();
@@ -42,53 +44,123 @@ app.use(session({
 app.use(flash());
 
 //Lets Render The Index page to see Whether handlebars are configured
-app.get('/', (req,res)=>{
-    res.render("index")
+app.get('/', async (req,res)=>{
+    const category = await sendData.givenCategories();
+    const expenseInfo = await sendData.expenseInformation()
+    res.render("index", {
+        category,
+        expenseInfo
+    })
 });
 
-app.get('/catagory', (req,res)=>{
-    res.render("catagory")
-})
+app.post('/addCatagory', async (req,res)=>{
+    const category = req.body.category;
+    const day = req.body.date;
+    const cost = req.body.cost;
 
-app.get('/users', async(req,res)=>{
-    let storedNames = await sendData.gettingStoredNames()
-   console.log(storedNames)
-    res.render("users", {
-        storedNames,
-    })
-
-})
-
-app.get('/expense/:names', async (req,res)=>{
-    res.render("expense")
-})
-app.post('/user', async (req,res)=>{
-    await sendData.storingFirstName(req.body.firstname, req.body.lastname, req.body.email)
-    // const storedFirst = storage.storedFirstNames()
-    // await sendData.storingFirstName(req.body.lastname)
-    // const storedLast = storage.storedLastNames()
-    // await sendData.storingFirstName(req.body.email)
-    // const storedEmails = storage.storedUserEmails()
-
-    // console.log(storedFirst)
-    // console.log(storedLast)
-    // console.log(storedEmails)
-
+    if(category && day){
+        await sendData.storingExpense(category,day,cost)
+        req.flash('success', 'Category Entry Added');
+    }
+    else{
+        req.flash('error', 'Select Category & Date');
+    }
     res.redirect("/")
 })
 
-app.post('/catagory', (req,res)=>{
-    storage.storingTypeCatagory(req.body.catagory)
-    const type = storage.availableCatagory()
-    storage.storingTheDate(req.body.date)
-    const date = storage.availableDates()
-    storage.storingTheCatagoryCost(req.body.cost)
-    const cost = storage.storedCost()
-    // console.log(type)
-    // console.log(date)
-    // console.log(cost)
-    res.redirect("catagory")
+app.get('/registration', (req,res)=>{
+    res.render("registration")
 })
+
+app.post('/registration', async (req,res)=>{
+    let {username} = req.body;
+
+    if(username){
+        const code = uniqueId();
+        username = username.toLowerCase();
+        const checking = await sendData.checkingExistingUsers(username)
+        if(checking != 0){
+            req.flash('error', username + ' Already Exists.')   
+        }
+        else{
+            await sendData.storingUserInformation(username, code);
+            req.flash('success', 'User was Added -- use the provide code to Log in : ' + code);
+        }   
+    }
+    else{
+        req.flash('error', 'No Username Provided')
+
+    }
+     
+    res.render("registration")
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get('/login', (req,res)=>{
+//     res.render("login")
+// })
+
+// app.post('/login',async (req,res)=>{
+//     let userName = req.body.firstname
+//     let checkingUsername = await sendData.getUserName(userName)
+//     if(checkingUsername){
+//         res.redirect(`/catagory/${userName}`)
+//     }else{
+//         res.redirect("index")
+//     }
+    
+// })
+
+// app.get('/catagory/:name', (req,res)=>{
+//     res.render("catagory")
+// })
+
+
+// app.post('/catagory/:name',async (req,res)=>{
+//     const user = req.params.name
+//     await sendData.storingExpenseInfo(user, req.body.catagory, req.body.date, req.body.cost)
+
+//     res.render("catagory")
+// })
+
+// app.get('/users', async(req,res)=>{
+//     let storedNames = await sendData.gettingStoredNames()
+// //    console.log(storedNames)
+//     res.render("users", {
+//         storedNames,
+//     })
+
+// })
+
+// app.get('/expense', async (req,res)=>{
+//     res.render("expense")
+// })
+// app.post('/user', async (req,res)=>{
+//     await sendData.storingFirstName(req.body.firstname, req.body.lastname, req.body.email)
+//     res.redirect("/")
+// })
+
+// app.post('/catagory', async (req,res)=>{
+
+//     console.log(req.body)
+//     res.redirect("catagory")
+// })
 
 
 //Starting the server on PORT 2001

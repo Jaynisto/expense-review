@@ -1,26 +1,20 @@
 CREATE TABLE users_information(
-    userid SERIAL PRIMARY KEY,
-    firstname VARCHAR(100),
-    secondname VARCHAR(100),
-    email VARCHAR(100)
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100),
+    code VARCHAR(100)
 );
 
-CREATE TABLE catagory_information(
-    catagory_id SERIAL PRIMARY KEY,
+CREATE TABLE category_information(
+    id SERIAL PRIMARY KEY,
     category VARCHAR(100)
 );
 
-CREATE TABLE expense_infomation(
+CREATE TABLE expense_information(
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
+    users_id INTEGER,
+    categorys_id INTEGER,
     cost FLOAT NOT NULL,
-    date DATE,
-    FOREIGN KEY (user_id) REFERENCES users_information(userid),
-    FOREIGN KEY (category_id) REFERENCES catagory_information(catagory_id)
+    added_on date not null DEFAULT CURRENT_DATE,
+    FOREIGN KEY (users_id) REFERENCES users_information(id),
+    FOREIGN KEY (categorys_id) REFERENCES category_information(id)
 );
-
-INSERT INTO catagory_information (category) VALUES('travel');
-INSERT INTO catagory_information (category) VALUES('food');
-INSERT INTO catagory_information (category) VALUES('toiletries');
-INSERT INTO catagory_information (category) VALUES('communication');
