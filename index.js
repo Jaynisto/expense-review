@@ -48,18 +48,20 @@ app.get('/', async (req,res)=>{
     const category = await sendData.givenCategories();
     const expenseInfo = await sendData.expenseInformation()
     res.render("index", {
+        user: req.session.user,
         category,
         expenseInfo
     })
 });
 
 app.post('/addCatagory', async (req,res)=>{
-    const category = req.body.category;
-    const day = req.body.date;
-    const cost = req.body.cost;
+    const {category} = req.body;
+    const {date} = req.body;
+    const {cost} = req.body;
+    const userId = req.session.user.id;
 
-    if(category && day){
-        await sendData.storingExpense(category,day,cost)
+    if(category && date){
+        await sendData.storingExpense(userId, category,date,cost)
         req.flash('success', 'Category Entry Added');
     }
     else{
@@ -94,6 +96,26 @@ app.post('/registration', async (req,res)=>{
      
     res.render("registration")
 })
+
+
+app.get('/login', async (req,res)=>{
+    const {code} = req.query;
+    if(code){
+
+        //if code is valid
+        const user = await sendData.codeVerification(code);
+        if (user){
+            // console.log(user)
+            // storing user in a session.
+            req.session.user = user;
+            res.redirect("/")
+            return;
+        }
+    }
+    res.render("login")
+    
+})
+
 
 
 

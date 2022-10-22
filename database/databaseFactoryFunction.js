@@ -5,13 +5,13 @@ module.exports = function databaseManipulation(db){
        return storedCategories;
     }
 
-    async function storingExpense(category, day, cost){ 
-        const insertingExpenseInformation = 'INSERT INTO expense_information(categorys_id, added_on, cost) VALUES ($1,$2,$3);';
-        await db.none(insertingExpenseInformation,[category, day, cost || 1])   
+    async function storingExpense(username, category, date, cost){ 
+        const insertingExpenseInformation = 'INSERT INTO expense_information(users_id, categorys_id, added_on, cost) VALUES ($1,$2,$3,$4);';
+        await db.none(insertingExpenseInformation,[username, category, date, cost || 1])   
     }
 
     async function expenseInformation(){
-        const extractingInformation = "SELECT *, to_char(added_on,'Day') AS day FROM expense_information join category_information ON expense_information.categorys_id = category_information.id;";
+        const extractingInformation = "SELECT *, to_char(added_on,'Day') AS day FROM expense_information join category_information ON expense_information.categorys_id = category_information.id join users_information ON users_information.id = expense_information.users_id WHERE users_information.id = $1;";
         const storedInfo = await db.manyOrNone(extractingInformation);
         return storedInfo;
 
@@ -27,6 +27,14 @@ module.exports = function databaseManipulation(db){
         const result = await db.one(findUser, [username]);
         return result.count;
     }
+
+    async function codeVerification(code){
+        const checkingPassword = 'SELECT * FROM users_information where code = $1;';
+        const userCode = await db.oneOrNone(checkingPassword, [code]);
+        return userCode;
+    }
+
+    
 
     // async function storingFirstName(firstname, secondname, email){
     //     const insertingUserInformation = await db.any('SELECT * FROM users_information WHERE firstname = $1;', [firstname])
@@ -87,7 +95,8 @@ module.exports = function databaseManipulation(db){
         givenCategories,
         expenseInformation,
         storingUserInformation,
-        checkingExistingUsers
+        checkingExistingUsers,
+        codeVerification
 
     }
 }

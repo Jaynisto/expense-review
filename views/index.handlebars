@@ -10,16 +10,15 @@
 <body>
     <h1>Catagory Page</h1><br>
     <div class="container2">
-        <p>Please Select Catagory And Enter Your Spending As Well As The Date</p><br><br>
-       
+        <p>Please Select Catagory And Enter Your Spending As Well As The Date</p><br>       
         <form action="addCatagory" method="POST">
-            <h2>Add category</h2><br>
             <div class="errorMessage">
                 {{messages.error}}
             </div>
             <div class="successMessage">
                 {{messages.success}}
-            </div><br><br>
+            </div><br>
+            <label>Username :</label>{{user.username}}<br>
             <label for="category">Catagory:</label>
             <select id="category" name="category">
                <option value="">Select Category</option>
